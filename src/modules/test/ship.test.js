@@ -13,7 +13,7 @@ describe('Ship Functionality', () => {
     expect(myShip.timesShot).toBe(1);  // Should be 1 after the first hit
   });
 
-  test('should return the correct message when the ship is sunk', () => {
+  test('should return true when the ship is sunk', () => {
     const myShip = ship(2);
     myShip.hit();  // 1st shot
     const result = myShip.hit();  // 2nd shot, ship should be sunk
