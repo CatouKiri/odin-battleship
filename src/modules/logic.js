@@ -24,36 +24,23 @@ function ship(length) {
 
 function gameboard() {
     const shipCoordinates = {}; // Tracks all ships' positions
-    const missedShots = []; // Tracks missed shots
+    const shotCoordinates = []; // Tracks missed shots
     const hitPositions = []; // Tracks hit positions
     let shipNumbers = 1;
 
     return {
         shipCoordinates,
-        missedShots,
+        shotCoordinates,
         hitPositions,
         shipNumbers,
-
         placeShip(ship, startingPointX, startingPointY, isHorizontal) {
           if((ship.length + startingPointX - 1) > 10 && !isHorizontal ||
           (ship.length + startingPointY - 1) > 10 && isHorizontal) {
                 return "out of bounds";
             }
             for (let i = 0; i < ship.length; i++) {
-                let x;
-                if (isHorizontal) {
-                    x = startingPointX;
-                } else {
-                    x = startingPointX + i;
-                }
-
-                let y;
-                if (isHorizontal) {
-                    y = startingPointY + i;
-                } else {
-                    y = startingPointY;
-                }
-
+                let x = isHorizontal ? startingPointX : startingPointX + i;
+                let y = isHorizontal ? startingPointY + i : startingPointY;
                 let coordinate = `${x},${y}`;
 
                 for (const coords of Object.values(shipCoordinates)) {
@@ -65,19 +52,8 @@ function gameboard() {
 
             let newCoordinates = [];
             for (let i = 0; i < ship.length; i++) {
-                let x;
-                if (isHorizontal) {
-                    x = startingPointX;
-                } else {
-                    x = startingPointX + i;
-                }
-
-                let y;
-                if (isHorizontal) {
-                    y = startingPointY + i;
-                } else {
-                    y = startingPointY;
-                }
+                let x = isHorizontal ? startingPointX : startingPointX + i;
+                let y = isHorizontal ? startingPointY + i : startingPointY;
 
                 newCoordinates.push(`${x},${y}`);
             }
@@ -86,7 +62,9 @@ function gameboard() {
             shipNumbers++;
             return "Ship placed successfully";
         },
-        missedShots
+        receiveAttack(x, y) {
+
+        }
     }
 }
 
