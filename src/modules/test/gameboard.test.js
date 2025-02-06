@@ -6,6 +6,7 @@ describe('gameboard placeship functionality', () => {
     const ship1 = ship(3);
     const success = myBoard.placeShip(ship1, 1, 1, true); // Place horizontally
     expect(success).toBe("Ship placed successfully");
+    expect(myBoard.shipNumbers).toEqual((1));
     expect(myBoard.shipCoordinates.ship1).toEqual(["1,1", "1,2", "1,3"]);
   });
 
@@ -41,21 +42,22 @@ describe('gameboard placeship functionality', () => {
   });
 });
 
-
+// RECEIVE ATTACK FUNCTION
 describe('gameboard receiveAttack functionality', () => {
   test('should take shot based on given coordinates', () => {
     const myBoard = gameboard();
     const firstShot = myBoard.receiveAttack(1,1);
-    expect(firstShot).toBe("missed attack");
-    expect(myBoard.shotCoordinates).toEqual(["1,1",]);
+    expect(firstShot).toBe("Miss!");
+    expect(myBoard.shotCoordinates).toEqual(["1,1"]);
+    expect(myBoard.missedAttacks).toEqual(1);
   });
 
   test('should take 2 shot based on given coordinates', () => {
     const myBoard = gameboard();
     const firstShot = myBoard.receiveAttack(1,1);
     const secondShot = myBoard.receiveAttack(1,2);
-    expect(firstShot).toBe("missed attack");
-    expect(secondShot).toBe("missed attack");
+    expect(firstShot).toBe("Miss!");
+    expect(secondShot).toBe("Miss!");
     expect(myBoard.shotCoordinates).toEqual(["1,1","1,2"]);
   });
 
@@ -63,20 +65,20 @@ describe('gameboard receiveAttack functionality', () => {
     const myBoard = gameboard();
     const firstShot = myBoard.receiveAttack(1,1);
     const secondShot = myBoard.receiveAttack(1,1);
-    expect(firstShot).toBe("missed attack");
-    expect(secondShot).toBe("coordinates already shot");
+    expect(firstShot).toBe("Miss!");
+    expect(secondShot).toBe("Coordinates are already shot");
     expect(myBoard.shotCoordinates).toEqual(["1,1"]);
+    expect(myBoard.missedAttacks).toEqual(1);
   });
 
-  test('should take shot based on given coordinates', () => {
+  test('should return hit when hit a ship', () => {
     const myBoard = gameboard();
     const ship1 = ship(3);
-    myBoard.placeShip(ship1, 1, 1, true); // Place horizontally
+    const success = myBoard.placeShip(ship1, 1, 1, true); // Place horizontally
     expect(success).toBe("Ship placed successfully");
     const firstShot = myBoard.receiveAttack(1,1);
-    expect(firstShot).toBe("hit");
+    expect(firstShot).toBe("Hit!");
     expect(myBoard.shotCoordinates).toEqual(["1,1"]);
     expect(ship1.timesShot).toEqual(1);
   });
-
 });

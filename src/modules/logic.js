@@ -11,10 +11,10 @@ function ship(length) {
                 return "Ship has already been destroyed.";
             }
             this.timesShot += 1;
-            if (this.timesShot === this.length) {
-                return this.isSunk();
+            if (this.isSunk()) {
+                return "Ship has been sunk!";
             }
-            return this.timesShot;
+            return "Hit!";
         },
         isSunk() {
             return this.timesShot >= this.length;
@@ -23,21 +23,24 @@ function ship(length) {
 }
 
 function gameboard() {
+    const ships = {}; // Tracks all ship objects
     const shipCoordinates = {}; // Tracks all ships' positions
     const shotCoordinates = []; // Tracks missed shots
     const hitPositions = []; // Tracks hit positions
-    let shipNumbers = 1;
 
     return {
         shipCoordinates,
         shotCoordinates,
         hitPositions,
-        shipNumbers,
+        shipNumbers: 0,
+        missedAttacks: 0,
         placeShip(ship, startingPointX, startingPointY, isHorizontal) {
           if((ship.length + startingPointX - 1) > 10 && !isHorizontal ||
-          (ship.length + startingPointY - 1) > 10 && isHorizontal) {
+            (ship.length + startingPointY - 1) > 10 && isHorizontal) {
                 return "out of bounds";
             }
+
+            let newCoordinates = [];
             for (let i = 0; i < ship.length; i++) {
                 let x = isHorizontal ? startingPointX : startingPointX + i;
                 let y = isHorizontal ? startingPointY + i : startingPointY;
@@ -48,22 +51,33 @@ function gameboard() {
                         return "Coordinates are already occupied";
                     }
                 }
-            }
-
-            let newCoordinates = [];
-            for (let i = 0; i < ship.length; i++) {
-                let x = isHorizontal ? startingPointX : startingPointX + i;
-                let y = isHorizontal ? startingPointY + i : startingPointY;
-
                 newCoordinates.push(`${x},${y}`);
             }
 
-            shipCoordinates[`ship${shipNumbers}`] = newCoordinates;
-            shipNumbers++;
+            this.shipNumbers++;
+            let shipName = `ship${this.shipNumbers}`;
+            shipCoordinates[shipName] = newCoordinates;
+            ships[shipName] = ship; // Store the actual ship object
+
             return "Ship placed successfully";
         },
         receiveAttack(x, y) {
+            let coordinate = `${x},${y}`;
 
+            if (shotCoordinates.includes(coordinate)) {
+                return "Coordinates are already shot";
+            }
+
+            for (const [shipName, positions] of Object.entries(shipCoordinates)) {
+                if (positions.includes(coordinate)) {
+                    shotCoordinates.push(coordinate);
+                    return ships[shipName].hit();
+                }
+            }
+
+            shotCoordinates.push(coordinate);
+            this.missedAttacks++;
+            return "Miss!";
         }
     }
 }
