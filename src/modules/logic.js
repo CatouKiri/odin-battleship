@@ -71,14 +71,21 @@ function gameboard() {
             for (const [shipName, positions] of Object.entries(shipCoordinates)) {
                 if (positions.includes(coordinate)) {
                     shotCoordinates.push(coordinate);
-                    return ships[shipName].hit();
+                    let result = ships[shipName].hit();
+                    if(this.gameOver()) {
+                        return "Hit! All ships sunk! Game Over!";
+                    }
+                    return result;
                 }
             }
 
             shotCoordinates.push(coordinate);
             this.missedAttacks++;
             return "Miss!";
-        }
+        },
+        gameOver() {
+            return Object.values(ships).every(ship => ship.isSunk());
+        },
     }
 }
 
