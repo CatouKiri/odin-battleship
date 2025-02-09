@@ -26,12 +26,10 @@ function gameboard() {
     const ships = {}; // Tracks all ship objects
     const shipCoordinates = {}; // Tracks all ships' positions
     const shotCoordinates = []; // Tracks missed shots
-    const hitPositions = []; // Tracks hit positions
 
     return {
         shipCoordinates,
         shotCoordinates,
-        hitPositions,
         shipNumbers: 0,
         missedAttacks: 0,
         placeShip(ship, startingPointX, startingPointY, isHorizontal) {
