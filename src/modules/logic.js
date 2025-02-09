@@ -89,5 +89,14 @@ function gameboard() {
     }
 }
 
-module.exports = {ship, gameboard};
+function player() {
+    return {
+        gameboard: gameboard(), // Each player gets their own gameboard
+        attack(enemyGameboard, x, y) {
+            return enemyGameboard.receiveAttack(x, y);
+        },
+    };
+}
+
+module.exports = {ship, gameboard, player};
 
