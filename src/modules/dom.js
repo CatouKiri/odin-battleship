@@ -28,3 +28,5 @@ function gameControl() {
     player1.gameboard.placeShip(player1_ship9, 9, 1, true); // Place horizontally
     player1.gameboard.placeShip(player1_ship10, 10, 1, true); // Place horizontally
 }
+
+export const test = "Test!";
