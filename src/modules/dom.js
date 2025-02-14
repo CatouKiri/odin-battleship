@@ -29,4 +29,32 @@ function gameControl() {
     player1.gameboard.placeShip(player1_ship10, 10, 1, true); // Place horizontally
 }
 
+function header() {
+    const header = document.createElement("header");
+    header.setAttribute("id", "header");
+
+    const gameName = document.createElement("div");
+    gameName.setAttribute("id", "gameName");
+    gameName.textContent = "Battleship";
+
+    const gameStatus = document.createElement("div");
+    gameStatus.setAttribute("id", "gameStatus");
+    gameStatus.textContent = "Place the ships";
+
+    header.append(
+        gameName,
+        gameStatus
+    );
+
+    return header;
+}
+
 export const test = "Test!";
+export default function render() {
+    const body = document.querySelector("body");
+    const headerElement = header();
+
+    body.append(headerElement);
+
+    return body;
+}
